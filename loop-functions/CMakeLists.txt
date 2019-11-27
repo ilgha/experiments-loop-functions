@@ -5,7 +5,11 @@ link_directories(
 	${CMAKE_BINARY_DIR}/src
     )
 
-add_subdirectory(vanilla)
+
+add_subdirectory(visual-add-ons)
+add_subdirectory(Repertoire)
+
+#add_subdirectory(vanilla)
 #add_subdirectory(chocolate)
 #add_subdirectory(gianduja)
 #add_subdirectory(complexity)
@@ -13,5 +17,4 @@ add_subdirectory(vanilla)
 #add_subdirectory(NEATvsEvo)
 #add_subdirectory(AutoMoDe-Modules)
 #add_subdirectory(ModularityExperiment)
-#add_subdirectory(visual-add-ons)
 #add_subdirectory(localsearch)
