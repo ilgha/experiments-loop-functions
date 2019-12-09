@@ -1,4 +1,6 @@
 add_library(SDBCLoopFunc SHARED
+                        GenericLoopFunc.cpp
+                        GenericLoopFunc.h
                         SDBCLoopFunc.cpp
                         SDBCLoopFunc.h
                         QualityMetricCollision.cpp
