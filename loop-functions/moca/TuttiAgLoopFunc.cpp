@@ -49,6 +49,7 @@ void TuttiAgLoopFunction::Init(TConfigurationNode& t_tree) {
       GetNodeAttributeOrDefault(cParametersNode, "number_edges", m_unNumberEdges, (UInt32) 3);
       GetNodeAttributeOrDefault(cParametersNode, "number_boxes_per_edge", m_unNumberBoxes, (UInt32) 1);
       GetNodeAttributeOrDefault(cParametersNode, "lenght_boxes", m_fLenghtBoxes, (Real) 0.25);
+      GetNodeAttributeOrDefault(cParametersNode, "maximization", m_bMaximization, (bool) false);
     } catch(std::exception e) {
     }
 
@@ -94,14 +95,24 @@ void TuttiAgLoopFunction::PostStep() {
 /****************************************/
 
 void TuttiAgLoopFunction::PostExperiment() {
-    LOG << m_fObjectiveFunction << std::endl;
+    if (m_bMaximization == true){
+        LOG << -m_fObjectiveFunction << std::endl;
+    }
+    else {
+        LOG << m_fObjectiveFunction << std::endl;
+    }
 }
 
 /****************************************/
 /****************************************/
 
 Real TuttiAgLoopFunction::GetObjectiveFunction() {
-    return m_fObjectiveFunction;
+    if (m_bMaximization == true){
+        return -m_fObjectiveFunction;
+    }
+    else {
+        return m_fObjectiveFunction;
+    }
 }
 
 /****************************************/

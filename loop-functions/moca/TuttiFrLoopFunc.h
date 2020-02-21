@@ -101,6 +101,11 @@ class TuttiFrLoopFunction: public CoreLoopFunctions {
      */
     UInt32 m_unTrnTime;
 
+    /*
+     * Allows for score invertion in maximization algorithms.
+     */
+    bool m_bMaximization;
+
     UInt32 m_unClock;
     Real m_fObjectiveFunction;
 
