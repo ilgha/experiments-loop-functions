@@ -84,7 +84,7 @@ void AggregationSingleSpot::PostStep() {
     /* Fill Trace file */
     NeuralNetworkRM1Dot1Binary& cController = dynamic_cast<NeuralNetworkRM1Dot1Binary&>(pcEpuck->GetControllableEntity().GetController());
     m_cTrace << cController.GetState();
-    LOG << cController.GetState();
+    // LOG << cController.GetState();
 
     /* Fill Fitness file */
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
@@ -96,7 +96,7 @@ void AggregationSingleSpot::PostStep() {
   }
   m_cTrace << std::endl;
   m_cFitness << unNumberRobotsOnPoint << std::endl;
-  LOG << std::endl;
+  // LOG << std::endl;
 }
 
 /****************************************/

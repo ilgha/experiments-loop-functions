@@ -14,7 +14,8 @@
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 
 #include "../../src/CoreLoopFunctions.h"
-#include "/home/aligot/Desktop/Arena/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"
+//#include "/home/aligot/Desktop/Arena/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"
+#include "/home/aligot/NEAT-private/src/controllers/NeuralNetworkRM1Dot1Binary.h"
 
 using namespace argos;
 
