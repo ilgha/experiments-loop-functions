@@ -47,7 +47,7 @@ void AttractionLoopFunction::Reset() {
 /****************************************/
 
 void AttractionLoopFunction::PostStep() {
-	m_ObjectiveFunction += ComputeStepObjectiveValue();  
+  m_ObjectiveFunction += ComputeStepObjectiveValue();
 }
 
 /****************************************/
