@@ -77,6 +77,15 @@ void ExplorationLoopFunction::Destroy() {}
 
 void ExplorationLoopFunction::Reset() {
   m_fScore = 0;
+  for(UInt16 i =0; i < m_unNumberRobots; i++){
+    m_p3DGrid[i] = new UInt16*[m_unCellsInRaws];
+    for(UInt32 j =0; j < m_unCellsInRaws; j++){
+      m_p3DGrid[i][j] = new UInt16[m_unCellsInColumns];
+      for(UInt32 k = 0; k < m_unCellsInColumns;k++){
+        m_p3DGrid[i][j][k] = 0;
+      }
+    }
+  }
   CoreLoopFunctions::Reset();
 }
 
