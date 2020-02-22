@@ -11,13 +11,14 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/dgarzonr/argos3-moca/experiments-loop-functions/build/loop-functions/moca/libtutti_ag_loopfunc.so"
+  <loop_functions library="/home/dgarzonr/argos3-plugins/experiments-loop-functions/build/loop-functions/moca/libtutti_ag_loopfunc.so"
    label="tutti_ag_loop_function">
        <params number_robots="20"
                build_arena="true"
                number_edges="6"
                number_boxes_per_edge="4"
-               lenght_boxes="0.25"/>
+               lenght_boxes="0.25"
+               maximization="false"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -25,8 +26,8 @@
   <!-- *************** -->
   <controllers>
 	<!-- TRANSMITTER -->
-    <automode_controller id="automode"
-                        library="/home/dgarzonr/argos_plugins/AutoMoDe-private/build/src/libautomode.so">
+    <automode_controller id="tuttifrutti"
+                        library="/home/dgarzonr/argos3-plugins/AutoMoDe-tuttifrutti/build/src/libautomode.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
@@ -39,7 +40,7 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="true" history='false' fsm-config="--nstates 2 --s0 8 --vel0 1.0 --cle0 4 --clr0 6 --n0 1 --n0x0 0 --c0x0 7 --p0x0 0.6 --l0x0 2 --s1 8 --vel1 1.0 --cle1 6 --clr1 2 --n1 4 --n1x0 0 --c1x0 5 --p1x0 0.29 --n1x1 0 --c1x1 2 --p1x1 0.66 --n1x2 0 --c1x2 1 --p1x2 0.51 --n1x3 0 --c1x3 3 --p1x3 4 --w1x3 4.44"/>
+    <params readable="false" history='false' fsm-config="--nstates 2 --s0 8 --vel0 1.0 --cle0 4 --clr0 6 --n0 1 --n0x0 0 --c0x0 7 --p0x0 0.6 --l0x0 2 --s1 8 --vel1 1.0 --cle1 6 --clr1 2 --n1 4 --n1x0 0 --c1x0 5 --p1x0 0.29 --n1x1 0 --c1x1 2 --p1x1 0.66 --n1x2 0 --c1x2 1 --p1x2 0.51 --n1x3 0 --c1x3 3 --p1x3 4 --w1x3 4.44"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
@@ -65,86 +66,96 @@
   <!-- * E-Puck * -->
   <!-- ********** -->
   
-  <e-puck id="epuck_01_30">
+  <distribute>
+    <position method="uniform" min="-1,-1,0" max="1,1,0" />
+    <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+    <entity quantity="20" max_trials="100">
+      <e-puck id="epuck">
+       <controller config="tuttifrutti" />
+      </e-puck>
+    </entity>
+  </distribute>
+  
+  <!--e-puck id="epuck_01_30">
     <body orientation="0,0,0" position="0,-0.4,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_02_40">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_03_50">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_04_51">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_05_55">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_06_46">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_07_34">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_08_35">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_09_36">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_10_57">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_11_44">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_12_48">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_13_61">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_14_28">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_15_32">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_16_33">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_17_39">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_18_42">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_19_47">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
+    <controller config="tuttifrutti" />
   </e-puck>
   <e-puck id="epuck_20_53">
     <body orientation="0,0,0" position="0,0,0" />
-    <controller config="automode"/>
-  </e-puck>
+    <controller config="tuttifrutti"/>
+  </e-puck-->
 
   <!-- The epucks are distributed by the AutoMoDeLoopFunctions. -->
 

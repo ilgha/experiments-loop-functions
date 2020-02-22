@@ -11,14 +11,14 @@
   <!-- ****************** -->
   <!-- * Loop functions * -->
   <!-- ****************** -->
-  <loop_functions library="/home/dgarzonr/argos3-plugins/experiments-loop-functions/build/loop-functions/moca/libtutti_st_loopfunc.so"
-   label="tutti_st_loop_function">
+  <loop_functions library="/home/dgarzonr/argos3-plugins/experiments-loop-functions/build/loop-functions/moca/libtutti_fr_loopfunc.so"
+   label="tutti_fr_loop_function">
        <params number_robots="20"
                build_arena="true"
-               number_edges="8"
-               number_boxes_per_edge="3"
+               number_edges="4"
+               number_boxes_per_edge="6"
                lenght_boxes="0.25"
-               maximization="false"/>
+               maximization="true"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -26,8 +26,8 @@
   <!-- *************** -->
   <controllers>
 	<!-- TRANSMITTER -->
-    <automode_controller id="tuttifrutti"
-                        library="/home/dgarzonr/argos3-plugins/AutoMoDe-tuttifrutti/build/src/libautomode.so">
+    <nn_rm_3dot0_controller id="evocolor"
+                        library="/home/dgarzonr/argos3-plugins/NEAT-evocolor/build/src/controllers/libnn_rm_3dot0.so">
       <actuators>
         <epuck_wheels implementation="default" noise_std_dev="0.05"/>
         <epuck_rgb_leds implementation="default" medium="leds"/>
@@ -40,11 +40,11 @@
 		    <epuck_ground implementation="rot_z_only" noise_level="0.05" calibrated="true"/>
             <epuck_omnidirectional_camera implementation="rot_z_only" medium="leds" show_rays="false"/>
       </sensors>
-    <params readable="false" history='false' fsm-config="--nstates 2 --s0 5 --rep0 2.4 --cle0 0 --n0 4 --n0x0 0 --c0x0 0 --p0x0 0.59 --n0x1 0 --c0x1 7 --p0x1 0.99 --l0x1 4 --n0x2 0 --c0x2 7 --p0x2 0.95 --l0x2 1 --n0x3 0 --c0x3 7 --p0x3 0.1 --l0x3 4 --s1 1 --cle1 4 --n1 1 --n1x0 0 --c1x0 7 --p1x0 0.01 --l1x0 5"/>
+    <params readable="false" genome_file="/home/dgarzonr/experiments/2019/tuttifrutti/data/controllers/ev-fr/nn/1/gen_last_1_champ"/>
 
                                         <!-- From sa -> n0x0 sb = n0x0 sb+1, (a < b) -->
                                         <!-- From sa -> n0x0 sb = n0x0 sb  , (a > b)-->
-    </automode_controller>
+    </nn_rm_3dot0_controller>
 
   </controllers>
 
@@ -71,90 +71,90 @@
     <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
     <entity quantity="20" max_trials="100">
       <e-puck id="epuck">
-       <controller config="tuttifrutti" />
+       <controller config="evocolor" />
       </e-puck>
     </entity>
   </distribute>
   
   <!--e-puck id="epuck_01_30">
     <body orientation="0,0,0" position="0,-0.4,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_02_40">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_03_50">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_04_51">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_05_55">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_06_46">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_07_34">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_08_35">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_09_36">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_10_57">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_11_44">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_12_48">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_13_61">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_14_28">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_15_32">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_16_33">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_17_39">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_18_42">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_19_47">
     <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="tuttifrutti" />
+    <controller config="evocolor" />
   </e-puck>
   <e-puck id="epuck_20_53">
     <body orientation="0,0,0" position="0,0,0" />
-    <controller config="tuttifrutti"/>
+    <controller config="evocolor"/>
   </e-puck-->
 
   <!-- The epucks are distributed by the AutoMoDeLoopFunctions. -->
@@ -162,6 +162,10 @@
   <!-- ********** -->
   <!-- * Walls * -->
   <!-- ********** -->
+
+  <box id="sep" size="0.15,.012,0.15" movable="false">
+    <body position="0.675,0,0" orientation="0,0,0"/>
+  </box>
 
   <!-- The walls are distributed by the AutoMoDeLoopFunctions. -->
   </arena>
