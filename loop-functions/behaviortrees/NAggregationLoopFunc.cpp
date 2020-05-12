@@ -72,10 +72,9 @@ void NAggregationLoopFunction::PostStep()
     Real step_score = 0.0f;
     for(int i = 0; i < _area_count; ++i)
     {
-        if(epuck_count_per_area[i] <= epuck_per_area)
-        {
-            step_score += epuck_count_per_area[i];
-        }
+        Real diff = std::abs(epuck_count_per_area[i] - epuck_per_area);
+        Real area_score = epuck_per_area - diff;
+        step_score += std::max(Real(0.0f), area_score);
     }
     LOG << "step score: " << step_score << std::endl;
 
