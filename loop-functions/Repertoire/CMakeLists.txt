@@ -1,4 +1,6 @@
 add_library(SDBCLoopFunc SHARED
+                        RepertoireTrainingLoopFunc.cpp
+                        RepertoireTrainingLoopFunc.h
                         GenericLoopFunc.cpp
                         GenericLoopFunc.h
                         SDBCLoopFunc.cpp
