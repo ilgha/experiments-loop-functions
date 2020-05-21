@@ -12,7 +12,9 @@
 /****************************************/
 
 RepertoireTrainingLoopFunc::RepertoireTrainingLoopFunc() {
-  m_fObjectiveFunction = 0;
+  m_fQualityMetric = 0.0f;
+  m_unExperimentLength = 0;
+  m_unNumberCollisions = 0;
 
   m_fPatchRadius = 0.35;
 
@@ -58,12 +60,19 @@ void RepertoireTrainingLoopFunc::Init(TConfigurationNode& t_tree) {
 /****************************************/
 
 void RepertoireTrainingLoopFunc::PostStep() {
+  m_unExperimentLength += 1;
+
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CSpace::TMapPerType& tWallMap = GetSpace().GetEntitiesByType("box");
 
   // For each robot
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+
+    // Compute number collisions
+    if (pcEpuck->GetEmbodiedEntity().IsCollidingWithSomething()) {
+      m_unNumberCollisions++;
+    }
 
     // Compute linear velocity
     m_vecRobotLinearVelocity.push_back(ComputeLinearVelocity(pcEpuck));
@@ -109,13 +118,6 @@ void RepertoireTrainingLoopFunc::PostStep() {
 
   }
 
-  LOG << m_vecRobotLinearVelocity.size() << std::endl;
-  LOG << m_vecRobotAngularVelocity.size() << std::endl;
-  LOG << m_vecRobotWallsDistances.size() << std::endl;
-  LOG << m_vecRobotRobotDistances.size() << std::endl;
-  LOG << m_vecRobotRobotMinDistances.size() << std::endl;
-  LOG << m_vecLightValuesPerceived.size() << std::endl;
-  LOG << m_vecGroundValuesPerceived.size() << std::endl;
 }
 
 /****************************************/
@@ -146,7 +148,21 @@ argos::CColor RepertoireTrainingLoopFunc::GetFloorColor(const argos::CVector2& c
 /****************************************/
 
 void RepertoireTrainingLoopFunc::Reset() {
-  m_fObjectiveFunction = 0;
+  // Quality metric
+  m_fQualityMetric = 0.0f;
+  m_unExperimentLength = 0;
+  m_unNumberCollisions = 0;
+
+  // SDBC
+  m_vecSDBC.clear();
+  m_vecRobotLinearVelocity.clear();
+  m_vecRobotAngularVelocity.clear();
+  m_vecRobotRobotDistances.clear();
+  m_vecRobotRobotMinDistances.clear();
+  m_vecRobotWallsDistances.clear();
+  m_vecLightValuesPerceived.clear();
+  m_vecGroundValuesPerceived.clear();
+
   CoreLoopFunctions::Reset();
 }
 
@@ -154,6 +170,42 @@ void RepertoireTrainingLoopFunc::Reset() {
 /****************************************/
 
 void RepertoireTrainingLoopFunc::PostExperiment() {
+  m_fQualityMetric = 1 - m_unNumberCollisions / (Real)(m_unExperimentLength * m_unNumberRobots);
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotLinearVelocity));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotLinearVelocity));
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotAngularVelocity));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotAngularVelocity));
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotWallsDistances));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotWallsDistances));
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotRobotDistances));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotRobotDistances));
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotRobotMinDistances));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotRobotMinDistances));
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecLightValuesPerceived));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecLightValuesPerceived));
+
+  m_vecSDBC.push_back(ComputeMeanValue(m_vecGroundValuesPerceived));
+  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecGroundValuesPerceived));
+
+  // Test
+  // std::vector<Real> vecTest;
+  // vecTest.push_back(1);
+  // vecTest.push_back(2);
+  // vecTest.push_back(3);
+  // vecTest.push_back(4);
+  // vecTest.push_back(5);
+  // vecTest.push_back(6);
+  // vecTest.push_back(7);
+  // vecTest.push_back(8);
+  // vecTest.push_back(9);
+  // vecTest.push_back(10);
+  // LOG << "Test " << ComputeMeanValue(vecTest) << " " << ComputeStandardDeviationValue(vecTest) << std::endl;
 
 }
 
@@ -161,7 +213,7 @@ void RepertoireTrainingLoopFunc::PostExperiment() {
 /****************************************/
 
 Real RepertoireTrainingLoopFunc::GetObjectiveFunction() {
-  return m_fObjectiveFunction;
+  return m_fQualityMetric;
 }
 
 /****************************************/
@@ -183,9 +235,6 @@ Real RepertoireTrainingLoopFunc::DistanceRobotWall(CEPuckEntity* pc_robot, CBoxE
 
   // Following code taken from https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
   Real fLenghtSquare = SquareDistance(cMinCorner, cMaxCorner);
-  if (fLenghtSquare == 0.0f) {
-    LOG << "Distance = " << Distance(cMinCorner, cRobotPosition) << std::endl;
-  }
 
   CVector2 cLineMinRobot = cRobotPosition - cMinCorner;
   CVector2 cLineMaxMin = cMaxCorner - cMinCorner;
@@ -223,6 +272,33 @@ Real RepertoireTrainingLoopFunc::ComputeLinearVelocity(CEPuckEntity* pc_robot) {
 Real RepertoireTrainingLoopFunc::ComputeAngularVelocity(CEPuckEntity* pc_robot) {
   Real fInterwheelDistance = pc_robot->GetWheeledEntity().GetWheelPosition(0).GetY() * 2;
   return (pc_robot->GetWheeledEntity().GetWheelVelocity(1) - pc_robot->GetWheeledEntity().GetWheelVelocity(0))/ fInterwheelDistance;
+}
+
+/****************************************/
+/****************************************/
+
+Real RepertoireTrainingLoopFunc::ComputeMeanValue(std::vector<Real> vector_values) {
+  if (vector_values.size() > 0) {
+    return std::accumulate(vector_values.begin(), vector_values.end(), 0.0) / vector_values.size();
+  } else {
+    THROW_ARGOSEXCEPTION("Empty vector!");
+  }
+}
+
+/****************************************/
+/****************************************/
+
+Real RepertoireTrainingLoopFunc::ComputeStandardDeviationValue(std::vector<Real> vector_values) {
+  Real fStandardDeviation = 0.0f;
+  if (vector_values.size() > 0) {
+    Real fMean = std::accumulate(vector_values.begin(), vector_values.end(), 0.0) / vector_values.size();
+    for (size_t i = 0; i < vector_values.size(); i++) {
+      fStandardDeviation += std::pow(vector_values[i] - fMean, 2);
+    }
+    return std::sqrt(fStandardDeviation / vector_values.size()) ;
+  } else {
+    THROW_ARGOSEXCEPTION("Empty vector!");
+  };
 }
 
 /****************************************/

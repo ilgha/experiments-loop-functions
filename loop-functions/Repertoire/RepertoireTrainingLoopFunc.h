@@ -10,6 +10,8 @@
 #ifndef REP_TRAIN_LOOP_FUNC
 #define REP_TRAIN_LOOP_FUNC
 
+#include <numeric>
+
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
 #include <argos3/plugins/simulator/entities/box_entity.h>
@@ -58,10 +60,8 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
     Real ComputeLinearVelocity(CEPuckEntity* pc_robot);
     Real ComputeAngularVelocity(CEPuckEntity* pc_robot);
 
-
-
-
-    Real m_fObjectiveFunction;
+    Real ComputeMeanValue(std::vector<Real> vector_values);
+    Real ComputeStandardDeviationValue(std::vector<Real> vector_values);
 
 
     // Environments elements
@@ -73,7 +73,14 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
     std::vector<Real> m_vecPossibleLightIntensities;
 
 
+    // Quality metric
+    Real m_fQualityMetric;
+    UInt32 m_unExperimentLength;
+    UInt32 m_unNumberCollisions;
+
+
     // Characterisation elements
+    std::vector<Real> m_vecSDBC;
     std::vector<Real> m_vecRobotLinearVelocity;
     std::vector<Real> m_vecRobotAngularVelocity;
     std::vector<Real> m_vecRobotRobotDistances;
