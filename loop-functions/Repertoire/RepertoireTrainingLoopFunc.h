@@ -60,8 +60,8 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
     Real ComputeLinearVelocity(CEPuckEntity* pc_robot);
     Real ComputeAngularVelocity(CEPuckEntity* pc_robot);
 
-    Real ComputeMeanValue(std::vector<Real> vector_values);
-    Real ComputeStandardDeviationValue(std::vector<Real> vector_values);
+    Real ComputeMeanValueFeature(UInt8 un_index_feature);
+    Real ComputeStandardDeviationValueFeature(UInt8 un_index_feature);
 
 
     // Environments elements
@@ -80,14 +80,10 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
 
 
     // Characterisation elements
-    std::vector<Real> m_vecSDBC;
-    std::vector<Real> m_vecRobotLinearVelocity;
-    std::vector<Real> m_vecRobotAngularVelocity;
-    std::vector<Real> m_vecRobotRobotDistances;
-    std::vector<Real> m_vecRobotRobotMinDistances;
-    std::vector<Real> m_vecRobotWallsDistances;
-    std::vector<Real> m_vecLightValuesPerceived;
-    std::vector<Real> m_vecGroundValuesPerceived;
+    bool m_boolStandardization; // If true, scaling factors are applied to SDBC
+    bool m_boolStandardDeviation; // If true, standard deviation included in SDBC 
+    std::vector<std::vector<Real>> m_vecAllSDBC;
+    std::vector<Real> m_vecFinalSDBC;
 
 };
 
