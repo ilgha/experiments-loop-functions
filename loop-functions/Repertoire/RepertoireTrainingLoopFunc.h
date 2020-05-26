@@ -23,6 +23,7 @@
 
 
 #include "../../src/CoreLoopFunctions.h"
+#include "./Objects/Box.h"
 
 using namespace argos;
 
@@ -63,6 +64,7 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
     Real ComputeMeanValueFeature(UInt8 un_index_feature);
     Real ComputeStandardDeviationValueFeature(UInt8 un_index_feature);
 
+    void AddObstacle(Box* pc_obstacle);
 
     // Environments elements
     Real m_fPatchRadius;
@@ -71,6 +73,7 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
     std::vector<CVector2> m_vecPossiblePatchesPositions;
     std::vector<CColor> m_vecPossiblePatchesColors;
     std::vector<Real> m_vecPossibleLightIntensities;
+    std::vector<Box*> m_vecPossibleObstacles;
 
 
     // Quality metric
@@ -81,7 +84,7 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
 
     // Characterisation elements
     bool m_boolStandardization; // If true, scaling factors are applied to SDBC
-    bool m_boolStandardDeviation; // If true, standard deviation included in SDBC 
+    bool m_boolStandardDeviation; // If true, standard deviation included in SDBC
     std::vector<std::vector<Real>> m_vecAllSDBC;
     std::vector<Real> m_vecFinalSDBC;
 

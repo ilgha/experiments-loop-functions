@@ -23,11 +23,17 @@ RepertoireTrainingLoopFunc::RepertoireTrainingLoopFunc() {
   m_vecPossiblePatchesColors.push_back(CColor::BLACK);
 
   m_vecPossiblePatchesPositions.push_back(CVector2(0,0));
-  m_vecPossiblePatchesPositions.push_back(CVector2(0,-0.65));
-  m_vecPossiblePatchesPositions.push_back(CVector2(0, 0.65));
+  m_vecPossiblePatchesPositions.push_back(CVector2(0,-0.70));
+  m_vecPossiblePatchesPositions.push_back(CVector2(0, 0.70));
 
   m_vecPossibleLightIntensities.push_back(0.0f);
   m_vecPossibleLightIntensities.push_back(5.0f);
+
+
+  m_vecPossibleObstacles.push_back(new Box(argos::CVector2(0, 0.35), 90, 0.70, 0));   // Box = position center; orientation; length; index
+  m_vecPossibleObstacles.push_back(new Box(argos::CVector2(0, -0.35), 90, 0.70, 0));   // Box = position center; orientation; length; index
+  m_vecPossibleObstacles.push_back(new Box(argos::CVector2(0.35, 0), 0, 0.70, 0));   // Box = position center; orientation; length; index
+  m_vecPossibleObstacles.push_back(new Box(argos::CVector2(-0.35, 0), 0, 0.70, 0));   // Box = position center; orientation; length; index
 
 }
 
@@ -63,6 +69,29 @@ void RepertoireTrainingLoopFunc::Init(TConfigurationNode& t_tree) {
     CLightEntity* pcLight = any_cast<CLightEntity*>(it->second);
     pcLight->SetIntensity(m_vecPossibleLightIntensities[unIndexIntensity]);
   }
+
+  // Obstacles
+  UInt8 unNumberObstacles = m_pcRng->Uniform(CRange<UInt32>(0,2));      // Max 1 obstacle for now on...
+  if (unNumberObstacles > 0) {
+    UInt8 unIndexObstacle = m_pcRng->Uniform(CRange<UInt32>(0, m_vecPossibleObstacles.size()));
+    AddObstacle(m_vecPossibleObstacles.at(unIndexObstacle));
+  }
+}
+
+/****************************************/
+/****************************************/
+
+void RepertoireTrainingLoopFunc::AddObstacle(Box* pc_obstacle) {
+  CBoxEntity* pcBox;
+  pcBox = new CBoxEntity("ostacle_" + ToString(pc_obstacle->GetIndex()),                                                  // Name
+                          CVector3(pc_obstacle->GetPosition().GetX(), pc_obstacle->GetPosition().GetY(), 0),              // Position
+                          CQuaternion().FromEulerAngles(argos::ToRadians(argos::CDegrees(pc_obstacle->GetOrientation())), // Orientation
+                                                        CRadians::ZERO,
+                                                        CRadians::ZERO),
+                          false,                                                                                        // Movable
+                          CVector3(pc_obstacle->GetWidth(), pc_obstacle->GetLength(), pc_obstacle->GetHeight()));       // Size
+
+  AddEntity(*pcBox);
 }
 
 /****************************************/

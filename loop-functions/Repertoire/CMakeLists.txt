@@ -7,6 +7,8 @@ add_library(SDBCLoopFunc SHARED
                         SDBCLoopFunc.h
                         QualityMetricCollision.cpp
                         QualityMetricCollision.h
+                        Objects/Box.cpp
+                        Objects/Box.h
                         ${LOOP_HEADERS}
                         ${LOOP_SOURCES})
 target_link_libraries(SDBCLoopFunc argos3plugin_${ARGOS_BUILD_FOR}_epuck)
