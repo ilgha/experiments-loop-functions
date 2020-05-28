@@ -1,12 +1,6 @@
 add_library(SDBCLoopFunc SHARED
                         RepertoireTrainingLoopFunc.cpp
                         RepertoireTrainingLoopFunc.h
-                        GenericLoopFunc.cpp
-                        GenericLoopFunc.h
-                        SDBCLoopFunc.cpp
-                        SDBCLoopFunc.h
-                        QualityMetricCollision.cpp
-                        QualityMetricCollision.h
                         Objects/Box.cpp
                         Objects/Box.h
                         ${LOOP_HEADERS}

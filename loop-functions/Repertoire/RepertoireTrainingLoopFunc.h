@@ -11,6 +11,8 @@
 #define REP_TRAIN_LOOP_FUNC
 
 #include <numeric>
+#include <iostream>
+#include <fstream>
 
 #include <argos3/core/simulator/space/space.h>
 #include <argos3/plugins/robots/e-puck/simulator/epuck_entity.h>
@@ -21,9 +23,9 @@
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_light_sensor.h>
 #include <argos3/plugins/robots/e-puck/control_interface/ci_epuck_ground_sensor.h>
 
-
 #include "../../src/CoreLoopFunctions.h"
 #include "./Objects/Box.h"
+
 
 using namespace argos;
 
@@ -43,6 +45,8 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
     virtual void Reset();
 
     Real GetObjectiveFunction();
+
+    std::vector<Real> GetSDBC();
 
     CVector3 GetRandomPosition();
 
@@ -83,10 +87,14 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
 
 
     // Characterisation elements
+    UInt8 m_unNumberFeatures;
     bool m_boolStandardization; // If true, scaling factors are applied to SDBC
     bool m_boolStandardDeviation; // If true, standard deviation included in SDBC
     std::vector<std::vector<Real>> m_vecAllSDBC;
     std::vector<Real> m_vecFinalSDBC;
+
+    std::vector<Real> m_vecFeatureScalingFactorMeans;
+    std::vector<Real> m_vecFeatureScalingFactorStandardDevs;
 
 };
 

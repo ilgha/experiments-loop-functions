@@ -57,18 +57,28 @@ void RepertoireTrainingLoopFunc::Init(TConfigurationNode& t_tree) {
     LOGERR << "Problem with Attributes in node params" << std::endl;
   }
 
+  m_unNumberFeatures = 7;   // Mean linear speed, angular speed, distance to walls/obstacles, distance to robots, distance to closest robot, ambient light perceived, ground color perceived.
+
+  // Initialization scaling factors
+  m_vecFeatureScalingFactorMeans = {0.0, 0.0, 1.259605869, 1.084184883, 0.268730835, 0.00797736053, 0.497768835};
+  m_vecFeatureScalingFactorStandardDevs = {12.0, 4.5283, 0.02633527, 0.07769956, 0.0317541, 0.008598, 0.0441245};
+
+  // Floor patches
   UInt8 unIndexColor = m_pcRng->Uniform(CRange<UInt32>(0, m_vecPossiblePatchesColors.size()));
   m_cPatchColor = m_vecPossiblePatchesColors[unIndexColor];
 
   UInt8 unIndexPosition = m_pcRng->Uniform(CRange<UInt32>(0, m_vecPossiblePatchesPositions.size()));
   m_cPatchPosition = m_vecPossiblePatchesPositions[unIndexPosition];
 
+
+  // Light
   CSpace::TMapPerType& tLightMap = GetSpace().GetEntitiesByType("light");
   UInt8 unIndexIntensity = m_pcRng->Uniform(CRange<UInt32>(0, m_vecPossibleLightIntensities.size()));
   for (CSpace::TMapPerType::iterator it = tLightMap.begin(); it != tLightMap.end(); ++it) {
     CLightEntity* pcLight = any_cast<CLightEntity*>(it->second);
     pcLight->SetIntensity(m_vecPossibleLightIntensities[unIndexIntensity]);
   }
+
 
   // Obstacles
   UInt8 unNumberObstacles = m_pcRng->Uniform(CRange<UInt32>(0,2));      // Max 1 obstacle for now on...
@@ -172,13 +182,12 @@ void RepertoireTrainingLoopFunc::PostStep() {
   }
 
 
+
   /*
   for (UInt8 i = 0; i < vecCurrentSDBC.size(); i++) {
     LOG << vecCurrentSDBC.at(i) << " ";
   }
-  LOG << std::endl;
-  */
-
+  LOG << std::endl;  */
 
 
 
@@ -232,57 +241,31 @@ void RepertoireTrainingLoopFunc::PostExperiment() {
   m_fQualityMetric = 1 - m_unNumberCollisions / (Real)(m_unExperimentLength * m_unNumberRobots);
 
   if (!m_boolStandardization && m_boolStandardDeviation) {
-    for (UInt8 i = 0; i < 7; i++) { // For all features
+    for (UInt8 i = 0; i < m_unNumberFeatures; i++) { // For all features
       m_vecFinalSDBC.push_back(ComputeMeanValueFeature(i));
       m_vecFinalSDBC.push_back(ComputeStandardDeviationValueFeature(i));
     }
   } else if (!m_boolStandardization && !m_boolStandardDeviation) {
-    for (UInt8 i = 0; i < 7; i++) { // For all features
+    for (UInt8 i = 0; i < m_unNumberFeatures; i++) { // For all features
       m_vecFinalSDBC.push_back(ComputeMeanValueFeature(i));
     }
+  } else if (m_boolStandardization && m_boolStandardDeviation) {
+    for (UInt8 i = 0; i < m_unNumberFeatures; i++) { // For all features
+      // LOG << ComputeMeanValueFeature(i) << " " <<  m_vecFeatureScalingFactorMeans.at(i) << " " << m_vecFeatureScalingFactorStandardDevs.at(i) << " " << (ComputeMeanValueFeature(i) - m_vecFeatureScalingFactorMeans.at(i)) / m_vecFeatureScalingFactorStandardDevs.at(i) << std::endl;
+      m_vecFinalSDBC.push_back((ComputeMeanValueFeature(i) - m_vecFeatureScalingFactorMeans.at(i)) / m_vecFeatureScalingFactorStandardDevs.at(i));
+      m_vecFinalSDBC.push_back(ComputeStandardDeviationValueFeature(i) / m_vecFeatureScalingFactorStandardDevs.at(i) * 2 - 1);
+    }
   }
-  /*
-m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotLinearVelocity));
 
-  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotAngularVelocity));
-  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotAngularVelocity));
 
-  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotWallsDistances));
-  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotWallsDistances));
 
-  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotRobotDistances));
-  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotRobotDistances));
-
-  m_vecSDBC.push_back(ComputeMeanValue(m_vecRobotRobotMinDistances));
-  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotRobotMinDistances));
-
-  m_vecSDBC.push_back(ComputeMeanValue(m_vecLightValuesPerceived));
-  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecLightValuesPerceived));
-
-  m_vecSDBC.push_back(ComputeMeanValue(m_vecGroundValuesPerceived));
-  m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecGroundValuesPerceived));
-
-  */
-
-  // Test
-  // m_vecAllSDBC.clear();
-  // vecTest.push_back(1);
-  // vecTest.push_back(2);
-  // vecTest.push_back(3);
-  // vecTest.push_back(4);
-  // vecTest.push_back(5);
-  // vecTest.push_back(6);
-  // vecTest.push_back(7);
-  // vecTest.push_back(8);
-  // vecTest.push_back(9);
-  // vecTest.push_back(10);
-  // LOG << "Test " << ComputeMeanValue(vecTest) << " " << ComputeStandardDeviationValue(vecTest) << std::endl;
-
-  LOG << "Final SDBC" << std::endl;
+  LOG << "SDBC ";
   for (UInt32 i = 0; i < m_vecFinalSDBC.size(); i++) {
      LOG << m_vecFinalSDBC[i] << " ";
   }
   LOG << std::endl;
+
+  LOG << "Fitness " << m_fQualityMetric <<  std::endl; //" (" << m_unNumberCollisions << ")" << std::endl;
 
 }
 
@@ -292,6 +275,14 @@ m_vecSDBC.push_back(ComputeStandardDeviationValue(m_vecRobotLinearVelocity));
 Real RepertoireTrainingLoopFunc::GetObjectiveFunction() {
   return m_fQualityMetric;
 }
+
+/****************************************/
+/****************************************/
+
+std::vector<Real> RepertoireTrainingLoopFunc::GetSDBC() {
+  return m_vecFinalSDBC;
+}
+
 
 /****************************************/
 /****************************************/
