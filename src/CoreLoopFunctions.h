@@ -70,7 +70,7 @@ class CoreLoopFunctions: public CLoopFunctions {
     /*
      * Returns the Behavioral characterization vector, for repertoire generation
      */
-    std::vector<Real> GetSDBC() { return std::vector<Real>(0); }; 
+    virtual std::vector<Real> GetSDBC() {}; 
 
 };
 
