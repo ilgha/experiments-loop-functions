@@ -67,6 +67,11 @@ class CoreLoopFunctions: public CLoopFunctions {
      */
     virtual CVector3 GetRandomPosition() = 0;
 
+    /*
+     * Returns the Behavioral characterization vector, for repertoire generation
+     */
+    std::vector<Real> GetSDBC() { return std::vector<Real>(0); }; 
+
 };
 
 #endif

@@ -181,16 +181,11 @@ void RepertoireTrainingLoopFunc::PostStep() {
     vecCurrentSDBC.at(i) /= m_unNumberRobots;
   }
 
-
-
   /*
   for (UInt8 i = 0; i < vecCurrentSDBC.size(); i++) {
     LOG << vecCurrentSDBC.at(i) << " ";
   }
   LOG << std::endl;  */
-
-
-
 
   m_vecAllSDBC.push_back(vecCurrentSDBC);
 }
@@ -230,6 +225,7 @@ void RepertoireTrainingLoopFunc::Reset() {
 
   // SDBC
   m_vecAllSDBC.clear();
+  m_vecFinalSDBC.clear();
 
   CoreLoopFunctions::Reset();
 }
