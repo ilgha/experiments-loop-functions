@@ -23,8 +23,8 @@ public:
     virtual argos::CVector3 GetRandomPosition();
 
 private:
-    static constexpr float _marker_radius = 0.15;
-    static constexpr float _valid_area_radius = 0.4;
+    static const float _marker_radius;
+    static const float _valid_area_radius;
 
     Real _objective_function;
 };

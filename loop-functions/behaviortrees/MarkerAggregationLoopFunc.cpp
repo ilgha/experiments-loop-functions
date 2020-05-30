@@ -2,8 +2,8 @@
 
 using namespace argos;
 
-constexpr float MarkerAggregationLoopFunction::_marker_radius;
-constexpr float MarkerAggregationLoopFunction::_valid_area_radius;
+const float MarkerAggregationLoopFunction::_marker_radius = 0.15;
+const float MarkerAggregationLoopFunction::_valid_area_radius = 0.4;
 
 MarkerAggregationLoopFunction::MarkerAggregationLoopFunction() :
     _objective_function(0.0f)
@@ -30,14 +30,15 @@ argos::CColor MarkerAggregationLoopFunction::GetFloorColor(
 
 void MarkerAggregationLoopFunction::PostStep()
 {
-    auto& epuck_map = GetSpace().GetEntitiesByType("epuck");
+    CSpace::TMapPerType& epuck_map = GetSpace().GetEntitiesByType("epuck");
     int epuck_count_in_valid_pos = 0;
 
     // count the number of robots in valid area
-    for(auto it = epuck_map.begin(); it != epuck_map.end(); ++it)
+    CSpace::TMapPerType::iterator it = epuck_map.begin();
+    for(; it != epuck_map.end(); ++it)
     {
-        auto epuck = any_cast<CEPuckEntity*>(it->second);
-        auto epuck_pos3 = epuck->GetEmbodiedEntity().GetOriginAnchor().Position;
+        CEPuckEntity* epuck = any_cast<CEPuckEntity*>(it->second);
+        CVector3 epuck_pos3 = epuck->GetEmbodiedEntity().GetOriginAnchor().Position;
         CVector2 epuck_pos(epuck_pos3.GetX(), epuck_pos3.GetY());
 
         // test if robot is in area

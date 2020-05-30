@@ -2,9 +2,9 @@
 
 using namespace argos;
 
-constexpr int NAggregationLoopFunction::_area_count;
-constexpr float NAggregationLoopFunction::_area_to_origin_distance;
-constexpr float NAggregationLoopFunction::_area_radius;
+const int NAggregationLoopFunction::_area_count;
+const float NAggregationLoopFunction::_area_to_origin_distance = 0.7;
+const float NAggregationLoopFunction::_area_radius = 0.25;
 
 NAggregationLoopFunction::NAggregationLoopFunction() :
     _area_centers(),
@@ -47,21 +47,22 @@ argos::CColor NAggregationLoopFunction::GetFloorColor(
 
 void NAggregationLoopFunction::PostStep()
 {
-    auto& epuck_map = GetSpace().GetEntitiesByType("epuck");
+    CSpace::TMapPerType& epuck_map = GetSpace().GetEntitiesByType("epuck");
     int epuck_count = epuck_map.size();
     int epuck_per_area = epuck_count / _area_count;
 
     int epuck_count_per_area[_area_count] = {0};
 
     // count the number of robots in each area
-    for(auto it = epuck_map.begin(); it != epuck_map.end(); ++it)
+    CSpace::TMapPerType::iterator it = epuck_map.begin();
+    for(; it != epuck_map.end(); ++it)
     {
-        auto epuck = any_cast<CEPuckEntity*>(it->second);
-        auto epuck_pos3 = epuck->GetEmbodiedEntity().GetOriginAnchor().Position;
+        CEPuckEntity* epuck = any_cast<CEPuckEntity*>(it->second);
+        CVector3 epuck_pos3 = epuck->GetEmbodiedEntity().GetOriginAnchor().Position;
         CVector2 epuck_pos(epuck_pos3.GetX(), epuck_pos3.GetY());
 
         // test if robot is in area
-        auto area_index = getAreaIndex(epuck_pos);
+        int area_index = getAreaIndex(epuck_pos);
         if(area_index >= 0)
         {
             ++epuck_count_per_area[area_index];

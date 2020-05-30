@@ -25,9 +25,9 @@ public:
 private:
     int getAreaIndex(argos::CVector2 const& position) const;
 
-    static constexpr int _area_count = 5;
-    static constexpr float _area_to_origin_distance = 0.7;
-    static constexpr float _area_radius = 0.25;
+    static const int _area_count = 5;
+    static const float _area_to_origin_distance;
+    static const float _area_radius;
 
     CVector2 _area_centers[_area_count];
 
