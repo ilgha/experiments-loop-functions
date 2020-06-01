@@ -13,7 +13,7 @@
   <!-- ****************** -->
   <loop_functions library="/home/aligot/Desktop/Arena/experiments-loop-functions/build/loop-functions/Repertoire/libSDBCLoopFunc.so"
    label="rep_train_loop_func">
-   <params dist_radius="1.2" number_robots="20" standardization="true" standard_deviation="true"/>
+   <params dist_radius="1.2" number_robots="20"/>
   </loop_functions>
 
   <!-- *************** -->

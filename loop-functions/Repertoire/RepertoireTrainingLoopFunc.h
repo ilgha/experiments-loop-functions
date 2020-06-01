@@ -87,9 +87,10 @@ class RepertoireTrainingLoopFunc : public CoreLoopFunctions {
 
 
     // Characterisation elements
+    Real m_fBound = 3.0f;
+
     UInt8 m_unNumberFeatures;
-    bool m_boolStandardization; // If true, scaling factors are applied to SDBC
-    bool m_boolStandardDeviation; // If true, standard deviation included in SDBC
+    bool m_boolSmaplingFeatures; // If true, number of robots randomly selected and SDBC only contains mean values, no SDs.
     std::vector<std::vector<Real>> m_vecAllSDBC;
     std::vector<Real> m_vecFinalSDBC;
 

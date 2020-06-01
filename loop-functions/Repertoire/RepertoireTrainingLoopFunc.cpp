@@ -51,17 +51,27 @@ void RepertoireTrainingLoopFunc::Init(TConfigurationNode& t_tree) {
   TConfigurationNode cParametersNode;
   try {
     cParametersNode = GetNode(t_tree, "params");
-    GetNodeAttributeOrDefault(cParametersNode, "standardization", m_boolStandardization, false);
-    GetNodeAttributeOrDefault(cParametersNode, "standard_deviation", m_boolStandardDeviation, false);
+    GetNodeAttributeOrDefault(cParametersNode, "samplingFeatures", m_boolSmaplingFeatures, false);
   } catch(std::exception e) {
     LOGERR << "Problem with Attributes in node params" << std::endl;
+  }
+
+  if (m_boolSmaplingFeatures) {
+    UInt8 unNbRobotsToRemove = m_pcRng->Uniform(CRange<UInt32>(0, 10));
+    for(UInt8 i = 1; i <= unNbRobotsToRemove; i++) {
+      std::ostringstream id;
+      id << "epuck" << i;
+      RemoveEntity(id.str().c_str());
+    }
   }
 
   m_unNumberFeatures = 7;   // Mean linear speed, angular speed, distance to walls/obstacles, distance to robots, distance to closest robot, ambient light perceived, ground color perceived.
 
   // Initialization scaling factors
-  m_vecFeatureScalingFactorMeans = {0.0, 0.0, 1.259605869, 1.084184883, 0.268730835, 0.00797736053, 0.497768835};
-  m_vecFeatureScalingFactorStandardDevs = {12.0, 4.5283, 0.02633527, 0.07769956, 0.0317541, 0.008598, 0.0441245};
+  //m_vecFeatureScalingFactorMeans = {0.0, 0.0, 1.259605869, 1.084184883, 0.268730835, 0.00797736053, 0.497768835};
+  //m_vecFeatureScalingFactorStandardDevs = {12.0, 4.5283, 0.02633527, 0.07769956, 0.0317541, 0.008598, 0.0441245};
+  m_vecFeatureScalingFactorMeans = {0.0, 0.0, 0.9654774, 0.6546410150000002, 0.23583227699999973, 0.006369859000000004, 0.38180308800000307};
+  m_vecFeatureScalingFactorStandardDevs = {12.0, 4.5283, 0.17962875427902958, 0.2532494908214206, 0.03819563474317805, 0.00720179463562769, 0.07595536343119043};
 
   // Floor patches
   UInt8 unIndexColor = m_pcRng->Uniform(CRange<UInt32>(0, m_vecPossiblePatchesColors.size()));
@@ -236,20 +246,17 @@ void RepertoireTrainingLoopFunc::Reset() {
 void RepertoireTrainingLoopFunc::PostExperiment() {
   m_fQualityMetric = 1 - m_unNumberCollisions / (Real)(m_unExperimentLength * m_unNumberRobots);
 
-  if (!m_boolStandardization && m_boolStandardDeviation) {
-    for (UInt8 i = 0; i < m_unNumberFeatures; i++) { // For all features
-      m_vecFinalSDBC.push_back(ComputeMeanValueFeature(i));
-      m_vecFinalSDBC.push_back(ComputeStandardDeviationValueFeature(i));
-    }
-  } else if (!m_boolStandardization && !m_boolStandardDeviation) {
+  if (m_boolSmaplingFeatures) {
     for (UInt8 i = 0; i < m_unNumberFeatures; i++) { // For all features
       m_vecFinalSDBC.push_back(ComputeMeanValueFeature(i));
     }
-  } else if (m_boolStandardization && m_boolStandardDeviation) {
+  } else {
     for (UInt8 i = 0; i < m_unNumberFeatures; i++) { // For all features
       // LOG << ComputeMeanValueFeature(i) << " " <<  m_vecFeatureScalingFactorMeans.at(i) << " " << m_vecFeatureScalingFactorStandardDevs.at(i) << " " << (ComputeMeanValueFeature(i) - m_vecFeatureScalingFactorMeans.at(i)) / m_vecFeatureScalingFactorStandardDevs.at(i) << std::endl;
-      m_vecFinalSDBC.push_back((ComputeMeanValueFeature(i) - m_vecFeatureScalingFactorMeans.at(i)) / m_vecFeatureScalingFactorStandardDevs.at(i));
-      m_vecFinalSDBC.push_back(ComputeStandardDeviationValueFeature(i) / m_vecFeatureScalingFactorStandardDevs.at(i) * 2 - 1);
+      Real fScaledMean = Max(-m_fBound, Min(m_fBound, (ComputeMeanValueFeature(i) - m_vecFeatureScalingFactorMeans.at(i)) / m_vecFeatureScalingFactorStandardDevs.at(i)));
+      m_vecFinalSDBC.push_back(fScaledMean);
+      Real fScaledSD = Max(-m_fBound, Min(m_fBound, (ComputeStandardDeviationValueFeature(i) / m_vecFeatureScalingFactorStandardDevs.at(i) * 2 - 1)));
+      m_vecFinalSDBC.push_back(fScaledSD);
     }
   }
 

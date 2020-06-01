@@ -13,7 +13,7 @@
   <!-- ****************** -->
   <loop_functions library="/home/aligot/Desktop/Arena/experiments-loop-functions/build/loop-functions/Repertoire/libSDBCLoopFunc.so"
    label="rep_train_loop_func">
-   <params dist_radius="1.2" number_robots="20" standardization="false" standard_deviation="false"/>
+   <params dist_radius="1.2" number_robots="20" samplingFeatures="true"/>
   </loop_functions>
 
   <!-- *************** -->
@@ -94,88 +94,15 @@
   <!-- ********** -->
   <!-- * E-Puck * -->
   <!-- ********** -->
-
-  <!-- The epucks are distributed by the AutoMoDeLoopFunctions. -->
-  <e-puck id="epuck_01_30">
-    <body orientation="0,0,0" position="0,-0.4,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_02_40">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_03_50">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_04_51">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_05_55">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_06_46">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_07_34">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_08_35">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_09_36">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_10_57">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_11_44">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_12_48">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_13_61">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_14_28">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_15_32">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_16_33">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_17_39">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_18_42">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_19_47">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
-  <e-puck id="epuck_20_53">
-    <body orientation="0,0,0" position="0.4,-0.6,0" />
-    <controller config="automode" />
-  </e-puck>
+  <distribute>
+     <position method="uniform" min="-1,-1,0" max="1,1,0" />
+     <orientation method="gaussian" mean="0,0,0" std_dev="360,0,0" />
+     <entity quantity="20" max_trials="100">
+       <e-puck id="epuck">
+         <controller config="automode" />
+       </e-puck>
+     </entity>
+   </distribute>
   </arena>
 
   <!-- ******************* -->
@@ -198,7 +125,6 @@
   <!-- * Visualization * -->
   <!-- ***************** -->
   <visualization>
-
   </visualization>
 
 </argos-configuration>
