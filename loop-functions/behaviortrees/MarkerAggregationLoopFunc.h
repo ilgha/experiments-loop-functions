@@ -25,6 +25,7 @@ public:
 private:
     static const float _marker_radius;
     static const float _valid_area_radius;
+    static const argos::CVector2 _marker_center;
 
     Real _objective_function;
 };

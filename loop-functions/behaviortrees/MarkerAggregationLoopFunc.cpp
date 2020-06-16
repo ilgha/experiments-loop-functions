@@ -4,6 +4,7 @@ using namespace argos;
 
 const float MarkerAggregationLoopFunction::_marker_radius = 0.15;
 const float MarkerAggregationLoopFunction::_valid_area_radius = 0.4;
+const argos::CVector2 MarkerAggregationLoopFunction::_marker_center(0.0,0.5);
 
 MarkerAggregationLoopFunction::MarkerAggregationLoopFunction() :
     _objective_function(0.0f)
@@ -23,7 +24,7 @@ void MarkerAggregationLoopFunction::Init(TConfigurationNode& t_tree)
 argos::CColor MarkerAggregationLoopFunction::GetFloorColor(
     const argos::CVector2& c_position_on_plane)
 {
-    return (c_position_on_plane.Length() <= _marker_radius) ?
+    return ((c_position_on_plane - _marker_center).Length() <= _marker_radius) ?
         CColor::BLACK :
         CColor::GRAY50;
 }
@@ -42,7 +43,7 @@ void MarkerAggregationLoopFunction::PostStep()
         CVector2 epuck_pos(epuck_pos3.GetX(), epuck_pos3.GetY());
 
         // test if robot is in area
-        if(epuck_pos.Length() < _valid_area_radius)
+        if((epuck_pos - _marker_center).Length() < _valid_area_radius)
         {
             ++epuck_count_in_valid_pos;
         }
