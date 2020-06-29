@@ -4,7 +4,7 @@ using namespace argos;
 
 const float MarkerAggregationLoopFunction::_marker_radius = 0.15;
 const float MarkerAggregationLoopFunction::_valid_area_radius = 0.4;
-const argos::CVector2 MarkerAggregationLoopFunction::_marker_center(0.0,0.5);
+const argos::CVector2 MarkerAggregationLoopFunction::_marker_center(0.0,0.7);
 
 MarkerAggregationLoopFunction::MarkerAggregationLoopFunction() :
     _objective_function(0.0f)
