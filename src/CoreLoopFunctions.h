@@ -47,9 +47,8 @@ class CoreLoopFunctions: public CLoopFunctions {
     /*
      * Method used to create and distribute the robots.
      * The position is given by the method GetRandomPosition().
-     * NOT USED ANYMORE (see note in Cpp file)
      */
-    //void PositionRobots();
+    void PositionRobots();
 
     /*
      * The number of robots to be placed for the experiment.
@@ -63,6 +62,12 @@ class CoreLoopFunctions: public CLoopFunctions {
 
     CRandom::CRNG* m_pcRng;
 
+    bool m_bBlack;
+    bool m_bIsRandom;
+    bool m_bRandomAndBlackActivated;
+    CColor m_cChooseColor;
+    Real fRandomIndex;
+
   public:
 
     /*
@@ -74,6 +79,9 @@ class CoreLoopFunctions: public CLoopFunctions {
      * Return a random position.
      */
     virtual CVector3 GetRandomPosition() = 0;
+
+  private:
+    void SelectColorOrder();
 
 };
 

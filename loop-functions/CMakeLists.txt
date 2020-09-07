@@ -8,4 +8,5 @@ link_directories(
 #add_subdirectory(chocolate)
 #add_subdirectory(example)
 add_subdirectory(gianduja)
+add_subdirectory(mate)
 #add_subdirectory(vanilla)
