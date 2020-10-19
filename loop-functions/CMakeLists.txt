@@ -15,3 +15,5 @@ add_subdirectory(vanilla)
 #add_subdirectory(ModularityExperiment)
 #add_subdirectory(visual-add-ons)
 #add_subdirectory(localsearch)
+#add_subdirectory(behaviortrees)
+
