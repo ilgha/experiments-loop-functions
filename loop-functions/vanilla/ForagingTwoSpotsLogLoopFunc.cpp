@@ -160,7 +160,7 @@ void ForagingTwoSpotsLogLoopFunction::PostStep() {
   if (score_temp != m_fObjectiveFunction) {
      //LOGERR << "Obj " << m_fObjectiveFunction << std::endl;
   }
-  std::cout << "-t " << m_unTimeStep << " -o " << m_fObjectiveFunction << std::endl;
+  std::cout << "--t " << m_unTimeStep << " --o " << m_fObjectiveFunction << std::endl;
   m_unTimeStep++;
 }
 
