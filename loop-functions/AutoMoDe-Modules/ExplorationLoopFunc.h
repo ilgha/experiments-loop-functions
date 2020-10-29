@@ -23,7 +23,8 @@ class ExplorationLoopFunction: public CoreLoopFunctions {
     virtual void Reset();
     virtual void Init(argos::TConfigurationNode& t_tree);
 
-	  virtual void PostStep();
+    virtual argos::CColor GetFloorColor(const CVector2& c_position_on_plane);
+    virtual void PostStep();
     virtual void PostExperiment();
 
     Real GetObjectiveFunction();
@@ -35,10 +36,10 @@ class ExplorationLoopFunction: public CoreLoopFunctions {
     virtual CVector3 GetRandomPosition();
 
   private:
-	  virtual Real ComputeStepObjectiveValue();
+    virtual Real ComputeStepObjectiveValue();
     virtual void RegisterPositions();
     virtual void InitGrid();
-	  Real m_fScore;
+    Real m_fScore;
 
     std::regex m_cRegex;
     
@@ -48,7 +49,7 @@ class ExplorationLoopFunction: public CoreLoopFunctions {
 
 
     CVector2 m_cSizeArena;
-	  Real maxScore;
+    Real maxScore;
 
     UInt32 m_unGranularity;
 };

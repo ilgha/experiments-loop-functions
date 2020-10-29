@@ -21,6 +21,7 @@ class AttractionLoopFunction: public CoreLoopFunctions {
     virtual void Reset();
     virtual void Init(argos::TConfigurationNode& t_tree);
 
+    virtual argos::CColor GetFloorColor(const CVector2& c_position_on_plane);
     virtual void PostStep();
     virtual void PostExperiment();
 

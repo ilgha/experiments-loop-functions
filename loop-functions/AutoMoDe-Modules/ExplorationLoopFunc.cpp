@@ -157,6 +157,12 @@ Real ExplorationLoopFunction::GetObjectiveFunction() {
   return m_fScore;
 }
 
+argos::CColor ExplorationLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+  CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+  return CColor::GRAY50;
+}
+
+
 /****************************************/
 /****************************************/
 
