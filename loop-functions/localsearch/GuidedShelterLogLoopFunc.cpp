@@ -25,9 +25,9 @@ GuidedShelterLogLoopFunc::GuidedShelterLogLoopFunc() {
 /****************************************/
 /****************************************/
 
-GuidedShelterLogLoopFunc::GuidedShelterLogLoopFunc(const GuidedShelterLoopFunc& orig) 
+GuidedShelterLogLoopFunc::GuidedShelterLogLoopFunc(const GuidedShelterLogLoopFunc& orig) 
 {
-  m_unTimeStep = orif.m_unTimeStep;
+  m_unTimeStep = orig.m_unTimeStep;
 }
 
 /****************************************/
