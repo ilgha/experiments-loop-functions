@@ -22,9 +22,9 @@ class AggregationTwoSpotsLogLoopFunction: public CoreLoopFunctions {
 protected:
   int m_unTimeStep;
   public:
-    AggregationTwoSpotsLoopFunction();
-    AggregationTwoSpotsLoopFunction(const AggregationTwoSpotsLoopFunction& orig);
-    virtual ~AggregationTwoSpotsLoopFunction();
+    AggregationTwoSpotsLogLoopFunction();
+    AggregationTwoSpotsLogLoopFunction(const AggregationTwoSpotsLogLoopFunction& orig);
+    virtual ~AggregationTwoSpotsLogLoopFunction();
 
     virtual void Destroy();
     virtual void Init(TConfigurationNode& t_tree);
