@@ -81,6 +81,8 @@ void AggregationTwoSpotsLogLoopFunction::Reset() {
 /****************************************/
 
 void AggregationTwoSpotsLogLoopFunction::PostStep() {
+  m_unScoreSpot1 = 0;
+  m_unScoreSpot2 = 0;
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
