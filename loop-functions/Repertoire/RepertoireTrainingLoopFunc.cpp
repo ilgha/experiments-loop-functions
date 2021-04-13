@@ -146,6 +146,10 @@ void RepertoireTrainingLoopFunc::PostStep() {
     for (CSpace::TMapPerType::iterator it = tWallMap.begin(); it != tWallMap.end(); ++it) {
       CBoxEntity* pcWall = any_cast<CBoxEntity*>(it->second);
       fDistanceToWalls += DistanceRobotWall(pcEpuck, pcWall);
+      /* std::cout << DistanceRobotWall(pcEpuck, pcWall) << std::endl; */
+      if ( DistanceRobotWall(pcEpuck, pcWall) < 0.095 ) {
+          m_unNumberCollisions++;
+      }
       unNumberWalls += 1;
     }
     vecCurrentSDBC.at(2) += fDistanceToWalls / unNumberWalls;
@@ -158,6 +162,12 @@ void RepertoireTrainingLoopFunc::PostStep() {
       CEPuckEntity* pcOtherEpuck = any_cast<CEPuckEntity*>(it->second);
       if (pcEpuck->GetId() != pcOtherEpuck->GetId()) {
         fCurrentDistanceRobot = DistanceRobotRobot(pcEpuck, pcOtherEpuck);
+
+        /* std::cout << "rob: " << DistanceRobotRobot(pcEpuck, pcOtherEpuck)<< std::endl; */
+        if ( DistanceRobotRobot(pcEpuck, pcOtherEpuck) < 0.095 ) {
+          m_unNumberCollisions++;
+        }
+
         if (fCurrentDistanceRobot < fMinDistance) {
           fMinDistance = fCurrentDistanceRobot;
         }
