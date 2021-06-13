@@ -91,7 +91,7 @@ Real ChocolateAACLoopFunction::GetObjectiveFunction() {
 /****************************************/
 
 CVector3 ChocolateAACLoopFunction::GetRandomPosition() {
-  Real temp;
+  /*Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   // If b < a, swap them
@@ -102,6 +102,11 @@ CVector3 ChocolateAACLoopFunction::GetRandomPosition() {
   }
   Real fPosX = b * m_fDistributionRadius * cos(2 * CRadians::PI.GetValue() * (a/b));
   Real fPosY = b * m_fDistributionRadius * sin(2 * CRadians::PI.GetValue() * (a/b));
+  */
+  Real a = m_pcRng->Uniform(CRange<Real>(-0.8f, 0.8f));
+  Real b = m_pcRng->Uniform(CRange<Real>(-0.5f, -1.0f));
+  Real fPosX = a;
+  Real fPosY = b;
 
   return CVector3(fPosX, fPosY, 0);
 }
