@@ -47,7 +47,7 @@ void ChocolateCFALoopFunction::Reset() {
 /****************************************/
 
 argos::CColor ChocolateCFALoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
-  CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+  CVector2 vCurrentPoint(c_position_on_plane.GetY(), c_position_on_plane.GetX());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fSpotRadius) {
     return CColor::BLACK;

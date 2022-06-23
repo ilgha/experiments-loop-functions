@@ -13,8 +13,8 @@
 
 AggregationTwoSpotsLoopFunction::AggregationTwoSpotsLoopFunction() {
   m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0.55,0);
-  m_cCoordSpot2 = CVector2(-0.55,0);
+  m_cCoordSpot1 = CVector2(0,0.55);
+  m_cCoordSpot2 = CVector2(0,-0.55);
   m_unScoreSpot1 = 0;
   m_unScoreSpot2 = 0;
   m_fObjectiveFunction = 0;
@@ -50,7 +50,7 @@ argos::CColor AggregationTwoSpotsLoopFunction::GetFloorColor(const argos::CVecto
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
   if (d <= m_fRadius) {
-    return CColor::BLACK;
+    return CColor::WHITE;
   }
 
   d = (m_cCoordSpot2 - vCurrentPoint).Length();
