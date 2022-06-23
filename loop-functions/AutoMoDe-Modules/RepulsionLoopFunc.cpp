@@ -45,6 +45,10 @@ void RepulsionLoopFunction::PostStep() {
 	m_ObjectiveFunction += ComputeStepObjectiveValue();  
 }
 
+argos::CColor RepulsionLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+  CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+  return CColor::GRAY50;
+}
 /****************************************/
 /****************************************/
 

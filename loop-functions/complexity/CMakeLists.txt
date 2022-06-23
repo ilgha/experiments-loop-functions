@@ -5,6 +5,7 @@ link_directories(
 	${CMAKE_BINARY_DIR}/src
     )
 
+
 #add_library(aggregation_xor SHARED AggregationTwoSpotsXOR.h AggregationTwoSpotsXOR.cpp)
 #target_link_libraries(aggregation_xor argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 

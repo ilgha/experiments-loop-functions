@@ -11,6 +11,8 @@ add_library(sca_loopfunc SHARED
                           SCAblackLoopFunc.cpp
                           SCAaroundLoopFunc.h
                           SCAaroundLoopFunc.cpp
+                          SCAhalfLoopFunc.h
+                          SCAhalfLoopFunc.cpp
                           AggregationSingleSpot.h
                           AggregationSingleSpot.cpp
                           DirectionalGate.h

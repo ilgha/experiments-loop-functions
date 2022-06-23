@@ -91,7 +91,7 @@ void AggregationTwoSpots5050::PostStep() {
     CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
     NeuralNetworkRM1Dot1Binary& cController = dynamic_cast<NeuralNetworkRM1Dot1Binary&>(pcEpuck->GetControllableEntity().GetController());
     m_cTrace << cController.GetState();
-    LOG << cController.GetState();
+    // LOG << cController.GetState();
 
     /* Fill Fitness file */
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
@@ -106,7 +106,7 @@ void AggregationTwoSpots5050::PostStep() {
   }
   m_cTrace << std::endl;
   m_cFitness << unNumberRobotsSpotA << "\t" << unNumberRobotsSpotB << "\t" << Min(unNumberRobotsSpotA, unNumberRobotsSpotB)/((Real) m_unNumberRobots/2) << std::endl;
-  LOG << std::endl;
+  // LOG << std::endl;
 }
 
 /****************************************/

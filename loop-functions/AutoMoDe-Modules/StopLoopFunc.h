@@ -20,7 +20,8 @@ class StopLoopFunction: public CoreLoopFunctions {
     virtual void Reset();
     virtual void Init(argos::TConfigurationNode& t_tree);
 
-	  virtual void PostStep();
+    virtual argos::CColor GetFloorColor(const CVector2& c_position_on_plane);
+    virtual void PostStep();
     virtual void PostExperiment();
 
     Real GetObjectiveFunction();

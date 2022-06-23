@@ -1,7 +1,10 @@
 #ifndef EXPLORATION_LOOP_FUNC
 #define EXPLORATION_LOOP_FUNC
 
+#include <regex>
 #include <vector>
+#include <fstream>
+#include <iostream>
 
 #include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
@@ -20,7 +23,8 @@ class ExplorationLoopFunction: public CoreLoopFunctions {
     virtual void Reset();
     virtual void Init(argos::TConfigurationNode& t_tree);
 
-	  virtual void PostStep();
+    virtual argos::CColor GetFloorColor(const CVector2& c_position_on_plane);
+    virtual void PostStep();
     virtual void PostExperiment();
 
     Real GetObjectiveFunction();
@@ -32,13 +36,22 @@ class ExplorationLoopFunction: public CoreLoopFunctions {
     virtual CVector3 GetRandomPosition();
 
   private:
-	  virtual Real ComputeStepObjectiveValue();
+    virtual Real ComputeStepObjectiveValue();
     virtual void RegisterPositions();
     virtual void InitGrid();
-	  Real m_ObjectiveFunction;
-    std::vector<bool> grid;
-    CVector2 sizeArena;
-	Real maxScore;
+    Real m_fScore;
+
+    std::regex m_cRegex;
+    
+    UInt16 ***m_p3DGrid;
+    UInt32 m_unCellsInRaws;
+    UInt32 m_unCellsInColumns;
+
+
+    CVector2 m_cSizeArena;
+    Real maxScore;
+
+    UInt32 m_unGranularity;
 };
 
 #endif
