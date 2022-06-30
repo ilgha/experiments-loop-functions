@@ -92,7 +92,7 @@ void AggregationAmbientCues::PostExperiment() {
     }
   }
 
-  m_fObjectiveFunction = Max(m_unScoreSpot1, m_unScoreSpot2)/(Real) m_unNumberRobots;
+  m_fObjectiveFunction = m_unScoreSpot2;
   LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
