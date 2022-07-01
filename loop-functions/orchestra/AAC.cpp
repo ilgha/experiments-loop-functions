@@ -83,6 +83,13 @@ void AAC::PostStep() {
 /****************************************/
 /****************************************/
 
+void AAC::PostExperiment() {
+  LOG << m_fObjectiveFunction << std::endl;
+}
+
+/****************************************/
+/****************************************/
+
 Real AAC::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
