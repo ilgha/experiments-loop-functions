@@ -8,7 +8,7 @@ link_directories(
 add_library(template SHARED Template.h Template.cpp)
 target_link_libraries(template argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
-add_library(aac SHARED AggregationAmbientCues.h AggregationAmbientCues.cpp)
+add_library(aac SHARED AAC.h AAC.cpp)
 target_link_libraries(aac argos3plugin_${ARGOS_BUILD_FOR}_epuck)
 
 add_library(cfa SHARED CFA.h CFA.cpp ${LOOP_HEADERS} ${LOOP_SOURCES})

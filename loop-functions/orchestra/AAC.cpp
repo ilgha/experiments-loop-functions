@@ -1,81 +1,71 @@
 /**
-  * @file <loop-functions/AggregationAmbientCues.cpp>
+  * @file <loop-functions/example/AAC.cpp>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
+  *
+  * @package ARGoS3-AutoMoDe
   *
   * @license MIT License
   */
 
-#include "AggregationAmbientCues.h"
+#include "AAC.h"
 
 /****************************************/
 /****************************************/
 
-AggregationAmbientCues::AggregationAmbientCues() {
+AAC::AAC() {
   m_fRadius = 0.3;
-  m_cCoordSpot1 = CVector2(0,0.55);
-  m_cCoordSpot2 = CVector2(0,-0.55);
-  m_unScoreSpot1 = 0;
-  m_unScoreSpot2 = 0;
+  m_cCoordBlackSpot = CVector2(0,0.6);
+  m_cCoordWhiteSpot = CVector2(0,-0.6);
   m_fObjectiveFunction = 0;
 }
 
 /****************************************/
 /****************************************/
 
-AggregationAmbientCues::AggregationAmbientCues(const AggregationAmbientCues& orig) {}
+AAC::AAC(const AAC& orig) {}
 
 /****************************************/
 /****************************************/
 
-void AggregationAmbientCues::Init(TConfigurationNode& t_tree) {
-    CoreLoopFunctions::Init(t_tree);
-}
+AAC::~AAC() {}
 
 /****************************************/
 /****************************************/
 
-
-AggregationAmbientCues::~AggregationAmbientCues() {}
-
-/****************************************/
-/****************************************/
-
-void AggregationAmbientCues::Destroy() {}
+void AAC::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-argos::CColor AggregationAmbientCues::GetFloorColor(const argos::CVector2& c_position_on_plane) {
-  CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
-  Real d = (m_cCoordSpot1 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
-    return CColor::WHITE;
-  }
-
-  d = (m_cCoordSpot2 - vCurrentPoint).Length();
-  if (d <= m_fRadius) {
-    return CColor::BLACK;
-  }
-
-  return CColor::GRAY50;
-}
-
-
-/****************************************/
-/****************************************/
-
-void AggregationAmbientCues::Reset() {
+void AAC::Reset() {
   m_fObjectiveFunction = 0;
-  m_unScoreSpot1 = 0;
-  m_unScoreSpot2 = 0;
   CoreLoopFunctions::Reset();
 }
 
 /****************************************/
 /****************************************/
 
-void AggregationAmbientCues::PostExperiment() {
+argos::CColor AAC::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+  CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
+  Real d = (m_cCoordBlackSpot - vCurrentPoint).Length();
+  if (d <= m_fRadius) {
+    return CColor::BLACK;
+  }
+
+  d = (m_cCoordWhiteSpot - vCurrentPoint).Length();
+  if (d <= m_fRadius) {
+    return CColor::WHITE;
+  }
+
+
+  return CColor::GRAY50;
+}
+
+/****************************************/
+/****************************************/
+
+void AAC::PostStep() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -83,30 +73,24 @@ void AggregationAmbientCues::PostExperiment() {
     cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-    Real fDistanceSpot1 = (m_cCoordSpot1 - cEpuckPosition).Length();
-    Real fDistanceSpot2 = (m_cCoordSpot2 - cEpuckPosition).Length();
-    if (fDistanceSpot1 <= m_fRadius) {
-      m_unScoreSpot1 += 1;
-    } else if (fDistanceSpot2 <= m_fRadius){
-      m_unScoreSpot2 += 1;
+    Real fDistanceSpot = (m_cCoordBlackSpot - cEpuckPosition).Length();
+    if (fDistanceSpot <= m_fRadius) {
+      m_fObjectiveFunction += 1;
     }
   }
-
-  m_fObjectiveFunction = m_unScoreSpot2;
-  LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/
 /****************************************/
 
-Real AggregationAmbientCues::GetObjectiveFunction() {
+Real AAC::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AggregationAmbientCues::GetRandomPosition() {
+CVector3 AAC::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -122,4 +106,4 @@ CVector3 AggregationAmbientCues::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AggregationAmbientCues, "aac");
+REGISTER_LOOP_FUNCTIONS(AAC, "aac");

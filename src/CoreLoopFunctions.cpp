@@ -54,6 +54,7 @@ void CoreLoopFunctions::MoveRobots() {
     // Choose position at random
     unTrials = 0;
     do {
+       LOG << pcEpuck->GetId() << std::endl;
        ++unTrials;
        CVector3 cEpuckPosition = GetRandomPosition();
        bPlaced = MoveEntity(pcEpuck->GetEmbodiedEntity(),
