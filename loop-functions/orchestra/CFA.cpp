@@ -140,7 +140,7 @@ Real CFA::GetExpectedDistance() {
 
   for (UInt32 i = 0; i < unNumberTrials; ++i) {
     CVector2 cRandomPoint = GetRandomPointInArena();
-    fTotalDistance = GetClosestEpuckDistanceFromPoint(cRandomPoint);
+    fTotalDistance += GetClosestEpuckDistanceFromPoint(cRandomPoint);
   }
 
   fExpectedDistance = fTotalDistance / unNumberTrials;
