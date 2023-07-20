@@ -17,6 +17,7 @@ using namespace std;
 Foraging::Foraging() {
   m_cCoordSpot1 = CVector2(0.75,0);
   m_fObjectiveFunction = 0;
+  timer = 0;
 }
 
 
@@ -230,72 +231,44 @@ void Foraging::Reset() {
 /****************************************/
 
 void Foraging::PostStep() {
-  ofstream MyFile("pos.mu", std::ios_base::app);
+  timer++;
+  if (timer%100 == 0)
+  {
+    ofstream MyFile("pos.mu", std::ios_base::app);
 
-  CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-  CVector2 cEpuckPosition(0,0);
+    CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
+    CVector2 cEpuckPosition(0,0);
 
-  MyFile << "[";
+    MyFile << "[";
 
-  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    std::string strRobotId = pcEpuck->GetId();
-    cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
+    for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
+      CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
+      std::string strRobotId = pcEpuck->GetId();
+      cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
+                          pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
 
-    // Write to the file
-    CSpace::TMapPerType::iterator next = it;
-    advance(next, 1);
-    if (next == tEpuckMap.end())
-    {
-      MyFile << "[" << cEpuckPosition << "]";
-      LOG << cEpuckPosition << endl;
-    }else{
-      MyFile << "[" << cEpuckPosition << "],";
-      LOG << cEpuckPosition << endl;
+      // Write to the file
+      CSpace::TMapPerType::iterator next = it;
+      advance(next, 1);
+      if (next == tEpuckMap.end())
+      {
+        MyFile << "[" << cEpuckPosition << "]";
+      }else{
+        MyFile << "[" << cEpuckPosition << "];";
+      }
     }
+
+    MyFile << "]\n";
+
+    // Close the file
+    MyFile.close();  
   }
-
-  MyFile << "]\n";
-
-  // Close the file
-  MyFile.close();  
 }
 
 /****************************************/
 /****************************************/
 
 void Foraging::PostExperiment() {
-  // Create and open a text file 
-  ofstream MyFile("pos.mu", std::ios_base::app);
-
-  CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
-  CVector2 cEpuckPosition(0,0);
-  
-  MyFile << "[";
-
-  for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
-    CEPuckEntity* pcEpuck = any_cast<CEPuckEntity*>(it->second);
-    std::string strRobotId = pcEpuck->GetId();
-    cEpuckPosition.Set(pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetX(),
-                        pcEpuck->GetEmbodiedEntity().GetOriginAnchor().Position.GetY());
-
-    CSpace::TMapPerType::iterator next = it;
-    advance(next, 1);
-    if (next == tEpuckMap.end())
-    {
-      MyFile << "[" << cEpuckPosition << "]";
-      LOG << cEpuckPosition << endl;
-    }else{
-      MyFile << "[" << cEpuckPosition << "],";
-      LOG << cEpuckPosition << endl;
-    }
-  }
-
-  MyFile << "]";
-
-  // Close the file
-  MyFile.close();  
 }
 
 /****************************************/
@@ -373,3 +346,4 @@ CVector3 Foraging::GetRandomPosition() {
 }
 
 REGISTER_LOOP_FUNCTIONS(Foraging, "foraging");
+

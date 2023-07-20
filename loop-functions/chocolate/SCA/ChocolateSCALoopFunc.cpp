@@ -133,6 +133,7 @@ void ChocolateSCALoopFunction::PostStep() {
       m_fObjectiveFunction += 1;
     }
   }
+  LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/

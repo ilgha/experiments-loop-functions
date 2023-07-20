@@ -48,6 +48,7 @@ class Foraging: public CoreLoopFunctions {
     CVector2 m_cCoordSpot1;
     CVector2 m_cCoordSpot2;
     Real m_fObjectiveFunction;
+    int timer;
 
     std::map<std::string, UInt32> m_mapFoodData;
 
