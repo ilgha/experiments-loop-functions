@@ -20,4 +20,5 @@ add_subdirectory(AutoMoDe-Modules)
 #add_subdirectory(ModularityExperiment)
 #add_subdirectory(localsearch)
 #add_subdirectory(behaviortrees)
+add_subdirectory(baby-arena)
 

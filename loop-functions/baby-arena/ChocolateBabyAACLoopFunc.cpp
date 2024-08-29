@@ -1,5 +1,5 @@
 /**
-  * @file <loop-functions/example/AAC.cpp>
+  * @file <loop-functions/example/ChocolateAACLoopFunc.cpp>
   *
   * @author Antoine Ligot - <aligot@ulb.ac.be>
   *
@@ -8,37 +8,37 @@
   * @license MIT License
   */
 
-#include "AAC.h"
+#include "ChocolateBabyAACLoopFunc.h"
 
 /****************************************/
 /****************************************/
 
-AAC::AAC() {
-  m_fRadius = 0.3;
-  m_cCoordBlackSpot = CVector2(0,-0.6);
-  m_cCoordWhiteSpot = CVector2(0,0.6);
+ChocolateBabyAACLoopFunction::ChocolateBabyAACLoopFunction() {
+  m_fRadius = 0.09;
+  m_cCoordBlackSpot = CVector2(0,0.16);
+  m_cCoordWhiteSpot = CVector2(0,-0.16);
   m_fObjectiveFunction = 0;
 }
 
 /****************************************/
 /****************************************/
 
-AAC::AAC(const AAC& orig) {}
+ChocolateBabyAACLoopFunction::ChocolateBabyAACLoopFunction(const ChocolateBabyAACLoopFunction& orig) {}
 
 /****************************************/
 /****************************************/
 
-AAC::~AAC() {}
+ChocolateBabyAACLoopFunction::~ChocolateBabyAACLoopFunction() {}
 
 /****************************************/
 /****************************************/
 
-void AAC::Destroy() {}
+void ChocolateBabyAACLoopFunction::Destroy() {}
 
 /****************************************/
 /****************************************/
 
-void AAC::Reset() {
+void ChocolateBabyAACLoopFunction::Reset() {
   m_fObjectiveFunction = 0;
   CoreLoopFunctions::Reset();
 }
@@ -46,7 +46,7 @@ void AAC::Reset() {
 /****************************************/
 /****************************************/
 
-argos::CColor AAC::GetFloorColor(const argos::CVector2& c_position_on_plane) {
+argos::CColor ChocolateBabyAACLoopFunction::GetFloorColor(const argos::CVector2& c_position_on_plane) {
   CVector2 vCurrentPoint(c_position_on_plane.GetX(), c_position_on_plane.GetY());
   Real d = (m_cCoordBlackSpot - vCurrentPoint).Length();
   if (d <= m_fRadius) {
@@ -65,7 +65,7 @@ argos::CColor AAC::GetFloorColor(const argos::CVector2& c_position_on_plane) {
 /****************************************/
 /****************************************/
 
-void AAC::PostStep() {
+void ChocolateBabyAACLoopFunction::PostStep() {
   CSpace::TMapPerType& tEpuckMap = GetSpace().GetEntitiesByType("epuck");
   CVector2 cEpuckPosition(0,0);
   for (CSpace::TMapPerType::iterator it = tEpuckMap.begin(); it != tEpuckMap.end(); ++it) {
@@ -83,21 +83,14 @@ void AAC::PostStep() {
 /****************************************/
 /****************************************/
 
-void AAC::PostExperiment() {
-  LOG << m_fObjectiveFunction << std::endl;
-}
-
-/****************************************/
-/****************************************/
-
-Real AAC::GetObjectiveFunction() {
+Real ChocolateBabyAACLoopFunction::GetObjectiveFunction() {
   return m_fObjectiveFunction;
 }
 
 /****************************************/
 /****************************************/
 
-CVector3 AAC::GetRandomPosition() {
+CVector3 ChocolateBabyAACLoopFunction::GetRandomPosition() {
   Real temp;
   Real a = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
   Real  b = m_pcRng->Uniform(CRange<Real>(0.0f, 1.0f));
@@ -113,4 +106,12 @@ CVector3 AAC::GetRandomPosition() {
   return CVector3(fPosX, fPosY, 0);
 }
 
-REGISTER_LOOP_FUNCTIONS(AAC, "aac");
+/****************************************/
+/****************************************/
+
+void ChocolateBabyAACLoopFunction::PostExperiment()
+{
+    LOG << m_fObjectiveFunction << std::endl;
+}
+
+REGISTER_LOOP_FUNCTIONS(ChocolateBabyAACLoopFunction, "chocolate_baby_aac_loop_functions");

@@ -1,11 +1,11 @@
 /*
- * Coverage with Forbidden Areas
+ * Aggregation with Ambient Clues
  *
  * @author Antoine Ligot - <aligot@ulb.ac.be>
  */
 
-#ifndef CHOCOLATE_CFA_LOOP_FUNC_H
-#define CHOCOLATE_CFA_LOOP_FUNC_H
+#ifndef CHOCOLATE_BABY_AAC_LOOP_FUNC_H
+#define CHOCOLATE_BABY_AAC_LOOP_FUNC_H
 
 #include "../../src/CoreLoopFunctions.h"
 #include <argos3/core/simulator/space/space.h>
@@ -13,15 +13,16 @@
 
 using namespace argos;
 
-class CFA : public CoreLoopFunctions {
+class ChocolateBabyAACLoopFunction : public CoreLoopFunctions {
 
    public:
-      CFA();
-      CFA(const CFA& orig);
-      virtual ~CFA();
+      ChocolateBabyAACLoopFunction();
+      ChocolateBabyAACLoopFunction(const ChocolateBabyAACLoopFunction& orig);
+      virtual ~ChocolateBabyAACLoopFunction();
 
       virtual void Destroy();
       virtual void Reset();
+      virtual void PostStep();
       virtual void PostExperiment();
 
       Real GetObjectiveFunction();
@@ -29,17 +30,11 @@ class CFA : public CoreLoopFunctions {
       virtual CColor GetFloorColor(const CVector2& c_position_on_plane);
 
       virtual CVector3 GetRandomPosition();
+
     private:
-
-      Real GetExpectedDistance();
-      CVector2 GetRandomPointInArena();
-      Real GetClosestEpuckDistanceFromPoint(CVector2& c_random_point);
-      bool IsOnBlackArea(CVector2& c_epuck_pos);
-
-      Real m_fSpotRadius;
-      CVector2 m_cCoordSpot1;
-      CVector2 m_cCoordSpot2;
-      CVector2 m_cCoordSpot3;
+      Real m_fRadius;
+      CVector2 m_cCoordBlackSpot;
+      CVector2 m_cCoordWhiteSpot;
 
       Real m_fObjectiveFunction;
 };
