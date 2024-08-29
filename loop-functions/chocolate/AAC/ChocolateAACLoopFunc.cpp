@@ -15,7 +15,7 @@
 
 ChocolateAACLoopFunction::ChocolateAACLoopFunction() {
   m_fRadius = 0.3;
-  m_cCoordBlackSpot = CVector2(0,0.6);
+  m_cCoordBlackSpot = CVector2(0,-0.6);
   m_cCoordWhiteSpot = CVector2(0,-0.6);
   m_fObjectiveFunction = 0;
 }
@@ -78,6 +78,7 @@ void ChocolateAACLoopFunction::PostStep() {
       m_fObjectiveFunction += 1;
     }
   }
+  LOG << "Score = " << m_fObjectiveFunction << std::endl;
 }
 
 /****************************************/

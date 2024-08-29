@@ -141,9 +141,8 @@ Real ChocolateCFALoopFunction::GetExpectedDistance() {
   for (UInt32 i = 0; i < unNumberTrials; ++i) {
     CVector2 cRandomPoint = GetRandomPointInArena();
     fTotalDistance = GetClosestEpuckDistanceFromPoint(cRandomPoint);
+    fExpectedDistance += fTotalDistance / unNumberTrials;
   }
-
-  fExpectedDistance = fTotalDistance / unNumberTrials;
 
   return fExpectedDistance;
 }
